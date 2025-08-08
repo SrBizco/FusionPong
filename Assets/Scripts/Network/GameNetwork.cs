@@ -47,17 +47,28 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (!runner.IsServer) return;
 
-        // ← AQUÍ
         bool isLeft = (runner.ActivePlayers.Count() % 2) == 1;
-
         var prefab = isLeft ? paddleLeftPrefab : paddleRightPrefab;
         var spawn = isLeft ? leftSpawn : rightSpawn;
 
         var paddle = runner.Spawn(prefab, spawn.position, spawn.rotation, player);
         _playerPaddle[player] = paddle;
 
-        if (FindFirstObjectByType<BallController>() == null)
-            runner.Spawn(ballPrefab, ballSpawn.position, ballSpawn.rotation, null);
+        // Bola única
+        var ball = FindFirstObjectByType<BallController>();
+        if (ball == null)
+        {
+            ball = runner.Spawn(ballPrefab, ballSpawn.position, ballSpawn.rotation, null)
+                          .GetComponent<BallController>();
+            ball.Freeze(true); // no arranca aún
+        }
+
+        // ¿Ya hay 2 jugadores? entonces “saque” con delay
+        if (runner.ActivePlayers.Count() >= 2)
+            ball.ResetAndServe(3f);
+       
+        var timer = FindFirstObjectByType<MatchTimer>();
+        if (timer) timer.TryStartIfReady();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

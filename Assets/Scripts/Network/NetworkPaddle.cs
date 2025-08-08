@@ -1,4 +1,5 @@
-﻿using Fusion;
+﻿using System.Collections;
+using Fusion;
 using UnityEngine;
 
 [RequireComponent(typeof(PaddleController))]
@@ -34,5 +35,20 @@ public class NetworkPaddle : NetworkBehaviour
         if (top != null && bottom != null)
             paddle.SetWalls(top, bottom);
     }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RpcApplyScaleBoost(float multiplier, float seconds)
+    {
+        StopCoroutine(nameof(ScaleBoostRoutine)); // por si había uno en curso
+        StartCoroutine(ScaleBoostRoutine(multiplier, seconds));
+    }
 
+    private IEnumerator ScaleBoostRoutine(float multiplier, float seconds)
+    {
+        var tr = transform;
+        var original = tr.localScale;
+
+        tr.localScale = new Vector3(original.x, original.y * multiplier, original.z);
+        yield return new WaitForSeconds(seconds);
+        tr.localScale = original;
+    }
 }
