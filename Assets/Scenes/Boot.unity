@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c9eef61ea43464da2e5a2a85e4af20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startAsDedicatedServer: 0
+  startAsDedicatedServer: 1
   startAsAutoHostClient: 0
   sessionName: FusionPong
 --- !u!4 &828630733

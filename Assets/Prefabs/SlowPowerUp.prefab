@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1852361952089724604}
-  - component: {fileID: -2198401573870749175}
   - component: {fileID: -972403392804049574}
   - component: {fileID: 9042518215833018621}
-  - component: {fileID: 8019243217400594237}
+  - component: {fileID: 6457542210060453727}
+  - component: {fileID: 4132303030155573720}
   - component: {fileID: 5215870667686603986}
   m_Layer: 0
-  m_Name: ScalePowerUp
+  m_Name: SlowPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,20 +36,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2198401573870749175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 806778738107856059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53942153afb86c4090606c407f2b8d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 10
-  scaleMultiplier: 1.5
 --- !u!65 &-972403392804049574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -115,7 +101,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a2563f2b8dbc4044b9a50537d3a29962, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eed44235dcbd621438f7c0c4f05e2356, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +112,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8019243217400594237
+--- !u!114 &6457542210060453727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806778738107856059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5096966bdcb9c814e8c5080099874de4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplier: 0.66
+  duration: 10
+--- !u!114 &4132303030155573720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,11 +155,11 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3341939062
+  SortKey: 2241433816
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -2198401573870749175}
-  - {fileID: 8019243217400594237}
+  - {fileID: 6457542210060453727}
+  - {fileID: 4132303030155573720}
   ForceRemoteRenderTimeframe: 0

@@ -54,21 +54,20 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
         var paddle = runner.Spawn(prefab, spawn.position, spawn.rotation, player);
         _playerPaddle[player] = paddle;
 
-        // Bola única
         var ball = FindFirstObjectByType<BallController>();
         if (ball == null)
         {
             ball = runner.Spawn(ballPrefab, ballSpawn.position, ballSpawn.rotation, null)
-                          .GetComponent<BallController>();
-            ball.Freeze(true); // no arranca aún
+                         .GetComponent<BallController>();
+            ball.Freeze(true);
         }
 
-        // ¿Ya hay 2 jugadores? entonces “saque” con delay
-        if (runner.ActivePlayers.Count() >= 2)
+        // ← Cambiá esta línea
+        if (runner.ActivePlayers.Count() >= GameSettings.RequiredPlayers)
             ball.ResetAndServe(3f);
-       
+
         var timer = FindFirstObjectByType<MatchTimer>();
-        if (timer) timer.TryStartIfReady();
+        if (timer) timer.TryStartIfReady(); // el timer ya valida RequiredPlayers internamente
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -80,13 +79,30 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
             runner.Despawn(paddle);
             _playerPaddle.Remove(player);
         }
-    }
 
-    // ===================== OBLIGATORIOS (Fusion 2) =====================
+        // Si quedamos por debajo del mínimo, pausamos
+        if (runner.ActivePlayers.Count() < GameSettings.RequiredPlayers)
+        {
+            var ball = FindFirstObjectByType<BallController>();
+            if (ball) ball.Freeze(true);
+
+            var timer = FindFirstObjectByType<MatchTimer>();
+            if (timer) timer.Running = false;
+        }
+    }
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+    {
+        int maxPlayers = GameSettings.RequiredPlayers; // 2 o 4 según el menú
+        int current = runner.ActivePlayers.Count();
+
+        if (current >= maxPlayers)
+            request.Refuse();
+        else
+            request.Accept();
+    }
     public void OnConnectedToServer(NetworkRunner runner) { }
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }

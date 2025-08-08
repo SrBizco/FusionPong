@@ -7,60 +7,57 @@ public class NetworkRunnerController : MonoBehaviour
     [Header("Opciones de inicio")]
     [SerializeField] private bool startAsDedicatedServer = false;
     [SerializeField] private bool startAsAutoHostClient = false;
-    [SerializeField] private string sessionName = "FusionPong";
+    [SerializeField] private string sessionName = "FusionPong"; // se sobrescribe con GameSettings
 
     private NetworkRunner _runner;
 
     private async void Start()
     {
-        // Sobrescribir con flags de línea de comando si existen
+        // Flags CLI
         if (HasArg("-dedicated")) startAsDedicatedServer = true;
         if (HasArg("-auto")) startAsAutoHostClient = true;
 
-        // Buscar primero un NetworkRunner existente en el mismo GameObject
+        // Runner (reusar si ya existe)
         _runner = GetComponent<NetworkRunner>();
-        if (_runner == null)
-            _runner = gameObject.AddComponent<NetworkRunner>();
+        if (_runner == null) _runner = gameObject.AddComponent<NetworkRunner>();
 
-        // El servidor dedicado no provee input
+        // Dedicated no provee input
         _runner.ProvideInput = !startAsDedicatedServer;
 
+        // Scene manager
         var sceneMgr = gameObject.AddComponent<NetworkSceneManagerDefault>();
 
-        // La escena del juego (pong)
-        SceneRef sceneRef = SceneRef.FromIndex(1);
+        // Escena de juego (Game) → Build index 2: [0]=MainMenu, [1]=Boot, [2]=Game
+        SceneRef sceneRef = SceneRef.FromIndex(2);
 
-        GameMode mode;
-        if (startAsDedicatedServer)
-            mode = GameMode.Server;
-        else if (startAsAutoHostClient)
-            mode = GameMode.AutoHostOrClient;
-        else
-            mode = GameMode.Client;
+        // Modo de inicio
+        GameMode mode =
+            startAsDedicatedServer ? GameMode.Server :
+            startAsAutoHostClient ? GameMode.AutoHostOrClient :
+            GameMode.Client;
+
+        // Nombre de sesión según 1v1 / 2v2 elegido en el menú
+        string session = GameSettings.SessionName;
 
         var result = await _runner.StartGame(new StartGameArgs
         {
             GameMode = mode,
-            SessionName = sessionName,
+            SessionName = session,
             Scene = sceneRef,
             SceneManager = sceneMgr
         });
 
         if (!result.Ok)
-        {
             Debug.LogError($"❌ Falló StartGame: {result.ShutdownReason}");
-        }
         else
-        {
-            Debug.Log($"✅ Runner iniciado como {mode} | Sesión: {sessionName}");
-        }
+            Debug.Log($"✅ Runner iniciado como {mode} | Sesión: {session}");
     }
 
     private static bool HasArg(string flag)
     {
         var args = System.Environment.GetCommandLineArgs();
-        foreach (var arg in args)
-            if (arg.Equals(flag, System.StringComparison.OrdinalIgnoreCase))
+        foreach (var a in args)
+            if (a.Equals(flag, System.StringComparison.OrdinalIgnoreCase))
                 return true;
         return false;
     }

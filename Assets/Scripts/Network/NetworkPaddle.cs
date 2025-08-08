@@ -51,4 +51,28 @@ public class NetworkPaddle : NetworkBehaviour
         yield return new WaitForSeconds(seconds);
         tr.localScale = original;
     }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RpcApplySpeedBoost(float multiplier, float seconds)
+    {
+        StopCoroutine(nameof(SpeedBoostRoutine));
+        StartCoroutine(SpeedBoostRoutine(multiplier, seconds));
+    }
+
+    private IEnumerator SpeedBoostRoutine(float multiplier, float seconds)
+    {
+        float original = paddle.Speed;
+        paddle.Speed = original * multiplier;
+        yield return new WaitForSeconds(seconds);
+        // si hubo otro boost encima, este restaura al último original de este stack simple
+        paddle.Speed = original;
+    }
+    public static NetworkPaddle GetOpponent(NetworkPaddle me)
+    {
+        var paddles = FindObjectsByType<NetworkPaddle>(FindObjectsSortMode.None);
+        if (paddles == null || paddles.Length < 2)
+            return null;
+
+        return paddles[0] == me ? paddles[1] : paddles[0];
+    }
 }

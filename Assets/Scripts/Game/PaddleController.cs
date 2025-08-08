@@ -8,6 +8,7 @@ public class PaddleController : MonoBehaviour
     [SerializeField] private Collider topWall;
     [SerializeField] private Collider bottomWall;
     [SerializeField] private bool useLocalInput = true;
+    public float Speed { get => speed; set => speed = value; }
 
     Rigidbody rb;
     float input;

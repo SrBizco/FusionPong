@@ -1,4 +1,4 @@
-using System.Linq;
+ï»¿using System.Linq;
 using Fusion;
 using TMPro;
 using UnityEngine;
@@ -12,7 +12,7 @@ public class MatchTimer : NetworkBehaviour
     [Header("UI (cliente)")]
     [SerializeField] private TMP_Text timerText;     // arrastrar en los clientes
     [SerializeField] private GameObject endPanel;    // panel final (oculto al inicio)
-    [SerializeField] private TMP_Text endText;       // "Ganó Left/Right 3–2"
+    [SerializeField] private TMP_Text endText;       // "GanÃ³ Left/Right 3â€“2"
 
     [Networked] public int SecondsLeft { get; set; }
     [Networked] public NetworkBool Running { get; set; }
@@ -32,13 +32,15 @@ public class MatchTimer : NetworkBehaviour
     {
         if (!Object.HasStateAuthority || Running || Finished) return;
 
-        if (Runner.ActivePlayers.Count() >= 2)
+        int required = GameSettings.RequiredPlayers;               // â† lee el modo actual
+        if (Runner.ActivePlayers.Count() >= required)
         {
             SecondsLeft = matchSeconds;
             Running = true;
             _accum = 0f;
         }
     }
+
 
     public override void FixedUpdateNetwork()
     {
@@ -85,11 +87,11 @@ public class MatchTimer : NetworkBehaviour
             if (score && endText)
             {
                 string winner =
-                    (score.LeftScore > score.RightScore) ? "Jugador Izquierdo" :
-                    (score.RightScore > score.LeftScore) ? "Jugador Derecho" :
+                    (score.LeftScore > score.RightScore) ? "Victoria del lado Izquierdo" :
+                    (score.RightScore > score.LeftScore) ? "Victoria del lado Derecho" :
                     "Empate";
 
-                endText.text = $"{winner}\n{score.LeftScore} — {score.RightScore}";
+                endText.text = $"{winner}\n{score.LeftScore} â€” {score.RightScore}";
             }
         }
     }
