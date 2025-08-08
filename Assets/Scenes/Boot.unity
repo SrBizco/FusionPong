@@ -221,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 720429861}
   - component: {fileID: 720429860}
+  - component: {fileID: 720429862}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -308,6 +309,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &720429862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720429859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &828630731
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 828630733}
   - component: {fileID: 828630732}
+  - component: {fileID: 828630734}
   m_Layer: 0
   m_Name: Bootstrap
   m_TagString: Untagged
@@ -337,7 +362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c9eef61ea43464da2e5a2a85e4af20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoStart: 1
+  startAsDedicatedServer: 1
+  startAsAutoHostClient: 0
   sessionName: FusionPong
 --- !u!4 &828630733
 Transform:
@@ -354,6 +380,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &828630734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828630731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1199893898, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

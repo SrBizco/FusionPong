@@ -1,13 +1,17 @@
+using Fusion;                // 👈 nuevo
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class BallController : NetworkBehaviour   // 👈 antes era MonoBehaviour
 {
     [SerializeField] private float speed = 8f;
     private Rigidbody rb;
 
-    void Awake() { rb = GetComponent<Rigidbody>(); }
-
-    void Start() { Launch(); }
+    public override void Spawned()               // 👈 en red, reemplaza Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (Object.HasStateAuthority)            // 👈 solo el server lanza la bola
+            Launch();
+    }
 
     void Launch()
     {
@@ -18,6 +22,7 @@ public class BallController : MonoBehaviour
 
     public void ResetBall()
     {
+        if (!Object.HasStateAuthority) return;   // 👈 solo server resetea
         transform.position = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
         Launch();
@@ -25,7 +30,7 @@ public class BallController : MonoBehaviour
 
     void OnCollisionEnter(Collision _)
     {
-        // mantener siempre el mismo módulo (evita que “se muera”)
+        if (!Object.HasStateAuthority) return;   // 👈 solo server ajusta velocidad
         rb.linearVelocity = rb.linearVelocity.normalized * speed;
     }
 }
