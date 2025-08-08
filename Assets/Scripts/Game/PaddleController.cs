@@ -37,7 +37,7 @@ public class PaddleController : MonoBehaviour
 
     void Update()
     {
-        if (!useLocalInput) return;  // 👈 si es online, otro script setea el input
+        if (!useLocalInput) return;
 
         input =
             (isLeft

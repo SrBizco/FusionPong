@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ShrinkOpponentPowerUp : NetworkBehaviour
 {
-    [SerializeField] private float multiplier = 0.66f; // achicar
+    [SerializeField] private float multiplier = 0.66f;
     [SerializeField] private float duration = 10f;
     bool active;
 
@@ -14,7 +14,7 @@ public class ShrinkOpponentPowerUp : NetworkBehaviour
         if (!Object.HasStateAuthority || !active) return;
         if (!other.TryGetComponent<BallController>(out var ball)) return;
 
-        var hitter = ball.LastPaddleHit;               // quien pegó último
+        var hitter = ball.LastPaddleHit;            
         if (hitter != null)
         {
             var rival = GetOpponent(hitter);

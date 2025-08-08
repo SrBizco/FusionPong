@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    [SerializeField] private GameObject creditsPanel; // arrastrá el panel acá
+    [SerializeField] private GameObject creditsPanel;
 
     public void Play1v1()
     {

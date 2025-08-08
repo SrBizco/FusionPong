@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SlowOpponentPowerUp : NetworkBehaviour
 {
-    [SerializeField] private float multiplier = 0.66f; // más lento
+    [SerializeField] private float multiplier = 0.66f;
     [SerializeField] private float duration = 10f;
     bool active;
 

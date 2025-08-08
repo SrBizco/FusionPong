@@ -10,7 +10,6 @@ public class ScoreManager : NetworkBehaviour
     [Networked] public int LeftScore { get; set; }
     [Networked] public int RightScore { get; set; }
 
-    // cache local para detectar cambios y refrescar UI
     private int _prevL, _prevR;
 
     public override void Spawned()
@@ -20,7 +19,6 @@ public class ScoreManager : NetworkBehaviour
         UpdateUI();
     }
 
-    // Se llama cada frame de render en cada peer (no sólo en el server)
     public override void Render()
     {
         if (_prevL != LeftScore || _prevR != RightScore)
@@ -31,7 +29,6 @@ public class ScoreManager : NetworkBehaviour
         }
     }
 
-    // Solo el server modifica el estado
     public void AddLeft()
     {
         if (!Object.HasStateAuthority) return;

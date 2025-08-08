@@ -13,14 +13,12 @@ public class NetworkPaddle : NetworkBehaviour
     {
         if (!Object.HasStateAuthority) return;
 
-        // ✅ Fusion 2
         if (Runner.TryGetInputForPlayer(Object.InputAuthority, out NetworkInputData data))
         {
             paddle.SetNetworkInput(data.MoveY);
         }
         else
         {
-            // sin input para este tick: frenar
             paddle.SetNetworkInput(0f);
         }
     }
@@ -38,7 +36,7 @@ public class NetworkPaddle : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RpcApplyScaleBoost(float multiplier, float seconds)
     {
-        StopCoroutine(nameof(ScaleBoostRoutine)); // por si había uno en curso
+        StopCoroutine(nameof(ScaleBoostRoutine));
         StartCoroutine(ScaleBoostRoutine(multiplier, seconds));
     }
 
@@ -64,7 +62,6 @@ public class NetworkPaddle : NetworkBehaviour
         float original = paddle.Speed;
         paddle.Speed = original * multiplier;
         yield return new WaitForSeconds(seconds);
-        // si hubo otro boost encima, este restaura al último original de este stack simple
         paddle.Speed = original;
     }
     public static NetworkPaddle GetOpponent(NetworkPaddle me)

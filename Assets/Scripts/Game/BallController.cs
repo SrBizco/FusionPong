@@ -1,4 +1,3 @@
-// BallController.cs (reemplaza)
 using Fusion;
 using UnityEngine;
 using System.Collections;
@@ -14,7 +13,7 @@ public class BallController : NetworkBehaviour
     public override void Spawned()
     {
         rb = GetComponent<Rigidbody>();
-        if (Object.HasStateAuthority) Freeze(true); // no arranca sola; el server decide cuándo
+        if (Object.HasStateAuthority) Freeze(true);
     }
 
     void Launch()
@@ -52,11 +51,9 @@ public class BallController : NetworkBehaviour
     {
         if (!Object.HasStateAuthority || IsFrozen) return;
 
-        // si pegó con una paleta, guardar quién fue
         if (c.gameObject.TryGetComponent<NetworkPaddle>(out var paddle))
             LastPaddleHit = paddle;
 
-        // mantener módulo de velocidad
         rb.linearVelocity = rb.linearVelocity.normalized * speed;
     }
 

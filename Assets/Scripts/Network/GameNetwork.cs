@@ -21,17 +21,14 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
 
     void Awake()
     {
-        // Unity 6: FindFirstObjectByType en vez de FindObjectOfType<T>()
         _runner = FindFirstObjectByType<NetworkRunner>();
         if (_runner != null)
             _runner.AddCallbacks(this);
     }
 
-    // ===================== INPUT =====================
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         float y = 0f;
-        // Para test local con 2 teclados simples
         if (Input.GetKey(KeyCode.W)) y += 1f;
         if (Input.GetKey(KeyCode.S)) y -= 1f;
         if (Input.GetKey(KeyCode.UpArrow)) y += 1f;
@@ -42,7 +39,6 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
 
-    // ===================== JOIN / LEAVE =====================
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (!runner.IsServer) return;
@@ -62,12 +58,11 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
             ball.Freeze(true);
         }
 
-        // ← Cambiá esta línea
         if (runner.ActivePlayers.Count() >= GameSettings.RequiredPlayers)
             ball.ResetAndServe(3f);
 
         var timer = FindFirstObjectByType<MatchTimer>();
-        if (timer) timer.TryStartIfReady(); // el timer ya valida RequiredPlayers internamente
+        if (timer) timer.TryStartIfReady();
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -80,7 +75,6 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
             _playerPaddle.Remove(player);
         }
 
-        // Si quedamos por debajo del mínimo, pausamos
         if (runner.ActivePlayers.Count() < GameSettings.RequiredPlayers)
         {
             var ball = FindFirstObjectByType<BallController>();
@@ -92,7 +86,7 @@ public class GameNetwork : MonoBehaviour, INetworkRunnerCallbacks
     }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
     {
-        int maxPlayers = GameSettings.RequiredPlayers; // 2 o 4 según el menú
+        int maxPlayers = GameSettings.RequiredPlayers;
         int current = runner.ActivePlayers.Count();
 
         if (current >= maxPlayers)

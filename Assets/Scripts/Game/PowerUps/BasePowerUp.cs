@@ -17,12 +17,12 @@ public abstract class BasePowerUp : NetworkBehaviour
 
         if (other.TryGetComponent<BallController>(out var ball))
         {
-            var last = ball.LastPaddleHit;          // quién pegó último
+            var last = ball.LastPaddleHit;     
             if (last != null)
             {
                 ApplyTo(last);
                 _active = false;
-                Runner.Despawn(Object);             // desaparece al usarse
+                Runner.Despawn(Object);      
             }
         }
     }

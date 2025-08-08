@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class PowerUpSpawner : NetworkBehaviour
 {
-    [SerializeField] private NetworkPrefabRef[] powerUpPrefabs; // ej: ScalePowerUp, etc.
-    [SerializeField] private Vector2 halfFieldSize = new(8f, 4f); // limites en X/Y
+    [SerializeField] private NetworkPrefabRef[] powerUpPrefabs;
+    [SerializeField] private Vector2 halfFieldSize = new(8f, 4f);
     [SerializeField] private float spawnInterval = 30f;
     [SerializeField] private bool onlyOneAtATime = true;
 
     float _t;
-    NetworkObject _lastSpawned; // server-side
+    NetworkObject _lastSpawned;
 
     public override void FixedUpdateNetwork()
     {
